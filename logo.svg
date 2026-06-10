@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+  <!-- Fond -->
+  <rect width="240" height="240" rx="48" fill="#0d1117"/>
+  <!-- Hexagone (France) -->
+  <polygon points="120,28 196,72 196,160 120,204 44,160 44,72"
+           fill="none" stroke="#3b82f6" stroke-width="10" stroke-linejoin="round"/>
+  <!-- Éclair Lightning (Bitcoin orange) -->
+  <path d="M132 52 L84 128 L114 128 L102 188 L158 104 L126 104 Z"
+        fill="#f7931a"/>
+</svg>
