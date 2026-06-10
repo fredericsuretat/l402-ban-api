@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: l402-ban-api
+    runtime: node
+    plan: free
+    buildCommand: npm ci --omit=dev
+    startCommand: node server.js
+    healthCheckPath: /health
+    envVars:
+      - key: PRICE_SATS
+        value: "5"
+      - key: BAN_BASE_URL
+        value: https://data.geopf.fr/geocodage
+      - key: LIGHTNING_ADDRESS
+        sync: false   # à renseigner dans le dashboard Render (ta Lightning address)

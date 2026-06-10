@@ -16,6 +16,25 @@ Conçu pour les agents IA : pas de compte, pas de clé API — le paiement Light
 
 ## Démarrage (5 minutes)
 
+### ☁️ Déploiement one-click (Render, gratuit)
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/fredericsuretat/l402-ban-api)
+
+1. Cliquer le bouton → connecter GitHub → Render lit `render.yaml`
+2. Renseigner la variable `LIGHTNING_ADDRESS` (ton wallet : Alby, Strike, Blink…)
+3. Deploy → URL HTTPS publique immédiate (`https://l402-ban-api.onrender.com`)
+
+> Plan gratuit : le service s'endort après 15 min d'inactivité (réveil ~30 s au premier appel). Suffisant pour valider la demande ; passer en payant ou auto-héberger si traction.
+
+### 🐳 Auto-hébergement (Docker)
+
+```bash
+cp .env.example .env   # → renseigner LIGHTNING_ADDRESS
+docker compose up -d
+```
+
+### 💻 Local
+
 ```bash
 git clone https://github.com/fredericsuretat/l402-ban-api && cd l402-ban-api
 npm install

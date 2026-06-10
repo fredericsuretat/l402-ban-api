@@ -1,0 +1,8 @@
+# Auto-hébergement (Vivobook / VPS) — docker compose up -d
+services:
+  l402-ban-api:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "3402:3402"
+    env_file: .env
