@@ -56,7 +56,7 @@ app.get("/", (_req, res) => {
       "GET /health": "Liveness (free)",
       "GET /.well-known/l402.json": "Agent discovery manifest (free)",
     },
-    docs: "https://github.com/CHANGE_ME/l402-ban-api#readme",
+    docs: "https://github.com/fredericsuretat/l402-ban-api#readme",
   });
 });
 

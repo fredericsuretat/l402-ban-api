@@ -17,7 +17,7 @@ Conçu pour les agents IA : pas de compte, pas de clé API — le paiement Light
 ## Démarrage (5 minutes)
 
 ```bash
-git clone https://github.com/CHANGE_ME/l402-ban-api && cd l402-ban-api
+git clone https://github.com/fredericsuretat/l402-ban-api && cd l402-ban-api
 npm install
 cp .env.example .env       # → renseigner LIGHTNING_ADDRESS
 npm start
