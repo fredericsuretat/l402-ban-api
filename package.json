@@ -8,10 +8,24 @@
     "start": "node server.js",
     "dev": "node --watch server.js"
   },
-  "keywords": ["l402", "lightning", "bitcoin", "ban", "adresse", "geocoding", "france", "api", "micropayments", "ai-agent"],
+  "keywords": [
+    "l402",
+    "lightning",
+    "bitcoin",
+    "ban",
+    "adresse",
+    "geocoding",
+    "france",
+    "api",
+    "micropayments",
+    "ai-agent"
+  ],
   "license": "MIT",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {
+    "@getalby/sdk": "^8.0.3",
     "express": "^5.2.1",
     "l402-kit": "^1.10.1"
   }

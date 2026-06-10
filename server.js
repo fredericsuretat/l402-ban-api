@@ -151,6 +151,55 @@ app.get("/api/v1/reverse", paywall, async (req, res) => {
 // Stats locales (gratuit — utile pour ton dashboard d'observabilité plus tard)
 app.get("/stats", (_req, res) => res.json(stats));
 
+// --- Dashboard wallet (privé, token requis) ----------------------------------
+// Config : NWC_URL (connexion Nostr Wallet Connect *lecture seule* créée dans Alby)
+//          DASHBOARD_TOKEN (secret long, ex: openssl rand -hex 24)
+app.get("/dashboard", async (req, res) => {
+  if (!process.env.DASHBOARD_TOKEN || req.query.token !== process.env.DASHBOARD_TOKEN) {
+    return res.status(404).json({ error: "not found" }); // 404 volontaire : ne pas révéler l'existence
+  }
+  if (!process.env.NWC_URL) {
+    return res.status(503).json({ error: "NWC_URL not configured" });
+  }
+  try {
+    const { NWCClient } = await import("@getalby/sdk");
+    const nwc = new NWCClient({ nostrWalletConnectUrl: process.env.NWC_URL });
+    const balance = await nwc.getBalance(); // msats
+    const txs = await nwc.listTransactions({ limit: 15, type: "incoming" });
+    nwc.close();
+
+    const sats = Math.floor(balance.balance / 1000);
+    const rows = (txs.transactions || [])
+      .map((t) => {
+        const d = new Date((t.settled_at || t.created_at) * 1000).toLocaleString("fr-FR");
+        const amt = Math.floor(t.amount / 1000);
+        return `<tr><td>${d}</td><td style="text-align:right">+${amt} sats</td><td>${(t.description || "").slice(0, 60)}</td></tr>`;
+      })
+      .join("");
+
+    res.send(`<!doctype html><html lang="fr"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>⚡ l402-ban-api — wallet</title>
+<style>
+ body{font-family:system-ui;background:#0d1117;color:#e6edf3;max-width:680px;margin:2rem auto;padding:0 1rem}
+ h1{font-size:1.2rem} .bal{font-size:2.4rem;color:#f7931a;font-weight:700}
+ table{width:100%;border-collapse:collapse;margin-top:1rem;font-size:.9rem}
+ td{padding:.45rem .3rem;border-bottom:1px solid #21262d}
+ .meta{color:#8b949e;font-size:.85rem}
+</style>
+<h1>⚡ Wallet l402-ban-api</h1>
+<div class="bal">${sats.toLocaleString("fr-FR")} sats</div>
+<div class="meta">Session serveur : ${stats.paid_requests} req payées · ${stats.sats_earned} sats (volatil)</div>
+<h2 style="font-size:1rem;margin-top:1.5rem">Derniers paiements reçus</h2>
+<table>${rows || "<tr><td>Aucun paiement pour l'instant</td></tr>"}</table>
+</html>`);
+  } catch (e) {
+    console.error("[dashboard]", e.message || e);
+    res.status(502).json({ error: "wallet connection failed" });
+  }
+});
+
 // Error handler global : jamais de stack trace HTML vers un client (souvent une machine)
 app.use((err, _req, res, _next) => {
   console.error("[error]", err.message || err);
